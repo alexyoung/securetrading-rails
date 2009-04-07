@@ -24,6 +24,10 @@ h3. Integration Examples
 
 Note: my apps have PricePlan and Payment classes, the plugin doesn't dictate the structure of these.
 
+There's an example view for cards in the examples directory.
+
+If you want the images I use, I open sourced them as well: <a href="http://insider.helicoid.net/articles/show/4/20_free_icons_dedicated_to_programmers">open source card images</a>.
+
 <code><pre>
 # Billing info
 card = Ecommerce::Cards.new params[:card]
@@ -61,9 +65,11 @@ h3. Exceptions
 
 You must catch these in your payment handling code and deal with them appropriately:
 
-Secure Trading errors: 1000, 1100, 2100, 3100 -- <code>Ecommerce::MerchantConfigurationError</code>
-Secure Trading errors: 2500 -- <code>Ecommerce::MerchantInvalidRequest</code>
-Secure Trading errors: 100, 101, 3000, 3010, 3330, 3350, 5000 -- <code>Ecommerce::MerchantConnectionError => merchant_exception</code>
+Errors 1000, 1100, 2100, 3100: <code>Ecommerce::MerchantConfigurationError</code>
+
+Errors 2500: <code>Ecommerce::MerchantInvalidRequest</code>
+
+Errors 100, 101, 3000, 3010, 3330, 3350, 5000: <code>Ecommerce::MerchantConnectionError => merchant_exception</code>
 
 h3. Continuous auth vs. Subscription
 
@@ -71,6 +77,9 @@ Continuous auth is where Secure Trading allow you to store a reference to a tran
 
 If you use their server's subscriptions, pausing and restarting a subscription will cause it to charge for the missed months.  I actually use this system but force customers to enter their card details again and therefore start a new subscription to avoid it billing for missed months.
 
+h3. Tests
+
+The tests are application specific and some of the code is legacy (things I experimented with when I started using this API).  I've stripped a lot of it out, and it should really be replaced for this open source plugin.
 
 h3. Future
 
@@ -78,4 +87,6 @@ This plugin was built before there were any popular Rails payment processing plu
 
 I designed the code to be namespaced so different ecommerce systems could be plugged in, but this probably isn't necessary.
 
-
+# Get the tests sorted out so they run outside Rails
+# Consider streamlining the code so there's less namespacing seeing as this will never be a generic ecommerce plugin
+# Contribute to ActiveMerchant or similar

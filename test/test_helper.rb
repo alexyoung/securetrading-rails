@@ -1,7 +1,7 @@
 require 'test/unit'
 require File.join(File.dirname(__FILE__), '../init')
 
-Ecommerce::Merchants::SecureTrading::Settings.site_reference = 'helicoid1234'
+Ecommerce::Merchants::SecureTrading::Settings.site_reference = 'helicoidtest'
 Ecommerce::Merchants::SecureTrading::Settings.certificate = <<TEXT
 
 -----BEGIN CERTIFICATE----- 

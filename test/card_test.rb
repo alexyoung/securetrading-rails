@@ -10,7 +10,7 @@ class CardTest < Test::Unit::TestCase
   end
   
   def test_card_expiry_expired?
-    expiry = Ecommerce::Cards::Base::ExpiryDate.new 11, 7
+    expiry = Ecommerce::Cards::Base::ExpiryDate.new 11, Time.now.strftime('%y').to_i
     assert !expiry.expired?
     
     expiry = Ecommerce::Cards::Base::ExpiryDate.new 1, 7
