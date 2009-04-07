@@ -28,7 +28,7 @@ There's an example view for cards in the examples directory.
 
 If you want the images I use, I open sourced them as well: <a href="http://insider.helicoid.net/articles/show/4/20_free_icons_dedicated_to_programmers">open source card images</a>.
 
-<code>
+<pre>
 # Billing info
 card = Ecommerce::Cards.new params[:card]
 billing = Ecommerce::Merchants::SecureTrading::CustomerInfo.new params[:billing]
@@ -39,7 +39,7 @@ Ecommerce::Tax.valid_vat_number? @account.location, @account.vat_number
 # Authorisation for a subscription
 order = Ecommerce::Merchants::SecureTrading::Order.create :invoice_line => 'Tiktrac: ' + price_plan.name, :account_id => proxy_owner.id
 response = Ecommerce::Merchants::SecureTrading::Subscription.authorise billing, card, order, amount_to_pay, next_payment_date
-</code>
+</pre>
 
 *Create a new transaction*:
 
