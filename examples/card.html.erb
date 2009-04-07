@@ -1,0 +1,104 @@
+<% form_tag submit_card_url, :class => 'standard' do %>
+  <%= error_messages_for 'card', :message => 'Your card details were invalid' %>
+  <fieldset>
+      <div id="CardHelp">
+        <h4>Security code</h4>
+        <div>
+          <img src="/images/card_back.gif">
+          <p>Most cards have a number on the signature strip.  Use the last 3 digits.</p> 
+        </div>
+        <div>
+          <img src="/images/card.gif">
+          <p>Other cards have a four digit number above the card number.</p>
+        </div>
+      </div>
+    <legend>1. Card details</legend>
+    <div>
+        <label for="card_type">Card type</label>
+        <%= select 'card', 'type', {'Visa' => 'VISA', 'MasterCard' => 'MasterCard'}.to_a %>
+    </div>
+    <div>
+        <label for="card_number">Card number</label>
+        <%= text_field 'card', 'number', :size => 20, :maxlength => 50 %>
+    </div>
+    <div>
+        <label for="card_security_code">Security code</label>
+        <%= text_field 'card', 'security_code', :size => 5, :maxlength => 50 %>
+    </div>
+    <div>
+        <label for="card_expiry_date">Expiry date</label>
+        <%= date_select 'card', 'expiry_date', :discard_day => true, :add_month_numbers => true, :order => [:month, :year] %>
+    </div>
+    <div>
+        <label for="card_start_date">Start date <span class="optional">(if required)</span></label>
+        <%= date_select 'card', 'start_date', :discard_day => true, :add_month_numbers => true, :include_blank => true, :order => [:month, :year] %>
+    </div>
+    <div>
+      &nbsp;
+    </div>
+  </fieldset>
+  <%= error_messages_for 'billing', :message => 'Your billing details were invalid' %>
+  <fieldset>
+    <legend>2. Billing details</legend>
+    <div>
+        <label for="billing_first_name">First name</label>
+        <%= text_field 'billing', 'first_name', :value => @account.owner.name.split(' ')[0] rescue '' %>
+    </div>
+    <div>
+        <label for="billing_last_name">Last name</label>
+        <%= text_field 'billing', 'last_name', :value => @account.owner.name.split(' ')[1] rescue '' %>
+    </div>
+    <div>
+        <label for="billing_first_name">Middle name <span class="optional">(if required)</span></label>
+        <%= text_field 'billing', 'middle_name' %>
+    </div>
+    <div>
+        <label for="billing_phone">Phone number</label>
+        <%= text_field 'billing', 'phone' %>
+    </div>
+    <div>
+        <label for="billing_email">Email</label>
+        <%= text_field 'billing', 'email', :value => @account.owner.email %>
+    </div>
+    <div>
+        <label for="billing_company">Company <span class="optional">(if required)</span></label>
+        <%= text_field 'billing', 'company', :value => @account.name %>
+    </div>
+    <div>
+        <label for="billing_vat_number"><a href="/help/vat" class="help">VAT Number</a> <span class="optional">(if required)</span></label>
+        <%= text_field 'account', 'vat_number' %>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>3. Billing address</legend>
+    <div>
+        <label for="billing_street">Street</label>
+        <%= text_field 'billing', 'street' %>
+    </div>
+    <div>
+        <label for="billing_city">City</label>
+        <%= text_field 'billing', 'city' %>
+    </div>
+    <div>
+        <label for="billing_state_prov">County/state</label>
+        <%= text_field 'billing', 'state_prov' %>
+    </div>
+    <div>
+        <label for="billing_postal_code">Postal code</label>
+        <%= text_field 'billing', 'postal_code' %>
+    </div>
+    <div>
+        <label for="billing_country">Country</label>
+        <%= select 'billing', 'country', Ecommerce::Countries::iso, :selected => 'GB' %>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>4. Recurring Transaction Authority</legend>
+    <p><input type="checkbox" value="yes" name="terms" id="terms" <%= params[:terms] == 'yes' ? 'checked="checked"' : '' %> /> I agree to the <a href="/terms" target="_blank">Terms of Service</a> and the following agreement.</p>
+    <p>I authorise you to charge my MasterCard/Visa as and when payment is due.  I understand that Helicoid Limited has advised me of the amount to be paid and the dates on which payment is due, and that Helicoid Limited may only change these dates after giving me prior notice.</p>
+    <p>I understand that this authority in favour of Helicoid Limited will remain in force until such time as I cancel it.</p>
+    <div>
+      <%= submit_tag 'Make payment' %>
+    </div>
+  </fieldset>
+

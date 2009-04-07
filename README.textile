@@ -1,0 +1,81 @@
+h2. Ecommerce Rails Plugin
+
+This plugin is used by "Helicoid's apps":http://helicoid.net for taking payments through the UK-based "Secure Trading":http://www.securetrading.com/ payment processor.
+
+h3. Features
+
+* The plugin maps between cards and Rails forms so they behave like ActiveRecord objects, making error messages easy
+* There's some UK-specific VAT-handling code, which helps you determine if your transaction should include VAT
+* I've used it to do both continuous auth and subscription payments (subscriptions run on Secure Trading's servers)
+
+h3. Requirements
+
+I haven't added an install script.  The plugin needs one table called 'orders':
+
+    create_table :orders do |t|
+      t.column :invoice_line, :string
+      t.column :account_id, :integer
+      t.column :created_at, :datetime
+    end
+
+This stores a unique ID for each transaction.  The account_id is used internally by my software, so you don't really need it.  The invoice line is sent to Secure Trading in the OrderInformation string.
+
+h3. Integration Examples
+
+Note: my apps have PricePlan and Payment classes, the plugin doesn't dictate the structure of these.
+
+<code><pre>
+# Billing info
+card = Ecommerce::Cards.new params[:card]
+billing = Ecommerce::Merchants::SecureTrading::CustomerInfo.new params[:billing]
+
+# Checking if VAT details are valid
+Ecommerce::Tax.valid_vat_number? @account.location, @account.vat_number
+
+# Authorisation for a subscription
+order = Ecommerce::Merchants::SecureTrading::Order.create :invoice_line => 'Tiktrac: ' + price_plan.name, :account_id => proxy_owner.id
+response = Ecommerce::Merchants::SecureTrading::Subscription.authorise billing, card, order, amount_to_pay, next_payment_date
+</pre></code>
+
+*Create a new transaction*:
+
+<code>Ecommerce::Merchants::SecureTrading.create(customer_info, card, order, amount, settlement_day = 1)</code>
+
+*Schedule a repeat payment* that uses continuous auth:
+
+<code>Ecommerce::Merchants::SecureTrading.repeat(customer_xml, order_object, amount)</code>
+
+*Reverse authorisation* (allow the customer to cancel an order before payment is authorised):
+
+<code>Ecommerce::Merchants::SecureTrading.auth_reversal(customer_xml, order, amount)</code>
+
+*Check the status of settlement*:
+
+<code>Ecommerce::Merchants::SecureTrading.settlement_query</code>
+
+Returns: Error, Declined, Pending, Settled
+
+*The subscription API* is similar to the previous examples.  See merchants/securetrading/subscription.rb
+
+h3. Exceptions
+
+You must catch these in your payment handling code and deal with them appropriately:
+
+Secure Trading errors: 1000, 1100, 2100, 3100 -- <code>Ecommerce::MerchantConfigurationError</code>
+Secure Trading errors: 2500 -- <code>Ecommerce::MerchantInvalidRequest</code>
+Secure Trading errors: 100, 101, 3000, 3010, 3330, 3350, 5000 -- <code>Ecommerce::MerchantConnectionError => merchant_exception</code>
+
+h3. Continuous auth vs. Subscription
+
+Continuous auth is where Secure Trading allow you to store a reference to a transaction and bill again later on.
+
+If you use their server's subscriptions, pausing and restarting a subscription will cause it to charge for the missed months.  I actually use this system but force customers to enter their card details again and therefore start a new subscription to avoid it billing for missed months.
+
+
+h3. Future
+
+This plugin was built before there were any popular Rails payment processing plugins, so I'd like to extract the Secure Trading-specific code and import it into "Active Merchant":http://www.activemerchant.org/ in the future.
+
+I designed the code to be namespaced so different ecommerce systems could be plugged in, but this probably isn't necessary.
+
+

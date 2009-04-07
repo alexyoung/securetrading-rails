@@ -1,0 +1,59 @@
+<RequestBlock Version=“3.51”> 
+ <Request Type=“AUTH”> 
+  <Operation> 
+   <Amount>1000</Amount> 
+   <Currency>GBP</Currency> 
+   <SiteReference>testref1234</SiteReference> 
+   <SettlementDay>1</SettlementDay> 
+  </Operation> 
+  <CustomerInfo> 
+   <Postal> 
+    <Name> 
+     <NamePrefix>Mr.</NamePrefix> 
+     <FirstName>Joe</FirstName> 
+     <MiddleName>A.</MiddleName> 
+     <LastName>Bloggs</LastName> 
+     <NameSuffix>CEng.</NameSuffix> 
+    </Name> 
+    <Company>A COMPANY</Company> 
+    <Street>A STREET</Street> 
+    <City>A CITY</City> 
+    <StateProv>A STATE</StateProv> 
+    <PostalCode>TE2 3ST</PostalCode> 
+    <CountryCode>GBR</CountryCode> 
+   </Postal> 
+   <Telecom> 
+    <Phone>0000 111111</Phone> 
+   </Telecom> 
+   <Online> 
+    <Email>CUSTOMER@SOMEDOMAIN.COM</Email> 
+   </Online> 
+  </CustomerInfo> 
+  <PaymentMethod> 
+   <CreditCard> 
+    <Type>VISA</Type> 
+    <Number>4111111111111111</Number> 
+    <Issue></Issue> 
+    <StartDate></StartDate> 
+    <ExpiryDate>02/05</ExpiryDate> 
+    <SecurityCode>246</SecurityCode> 
+   </CreditCard> 
+  </PaymentMethod> 
+  <Order> 
+   <OrderReference>Order0001</OrderReference> 
+   <OrderInformation>Test Order</OrderInformation> 
+  </Order> 
+ </Request> 
+ <Certificate> 
+-----BEGIN CERTIFICATE----- 
+MIIGUTCCBg+gAwIBAgICAQMwCwYHKoZIzjgEAwUAMIG/MQswCQYDVQQGEwJVSzEP 
+MA0GA1UECBMGTG9uZG9uMQswCQYDVQQHEwJTVDEWMBQGA1UEChMNU2VjdXJlVHJh 
+SPEeso/HNlkY8DXrEXixAhRcJrEC3JnDXLRDZc32MciHvISP9Q== 
+-----END CERTIFICATE----- 
+-----BEGIN RSA PRIVATE KEY----- 
+TWhG9Qn9kJ+h15rJBvbQtNvFMBuLlIXEVOxZboteE+2lW7iYz5gF7HWUPgjM+RTM 
+j6D5al6AuWU0/uqL6VVe6POgBorSFeWd18RnQLfAinVkEu8UkWQBS1Y4j5ICFGRc 
+YaJAnR5AJ4xXUK3CHVbLEBkW 
+-----END RSA PRIVATE KEY----- 
+ </Certificate> 
+</RequestBlock> 
